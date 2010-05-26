@@ -51,9 +51,9 @@ module Paperclip
 
       initialize_storage
     end
-    
+
     def process_config path
-      return if options[:config].blank?
+      return if path.blank?
       opts = YAML::load(ERB.new(File.read(path)).result).stringify_keys
       opts = opts[Rails.env.to_s]
       opts.each_pair do |key, val|
