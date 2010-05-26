@@ -1,3 +1,34 @@
+= Changes in this fork:
+
+I wanted to be able to declaratively specify the locale file system for the test environment and S3 for development and production. Doing something similar to config/s3.yml seemed like the trick. That's implemented in this fork.
+
+  has_attached_file optionally takes a :config => file_path_string argument
+
+which should point to a yaml file with separate sections for :test, :development, and :production, (and whatever other rails envs you use).  These can have any of the arguments that are normally specified to has_attached_file and they're overridden by any args you explicitly make. 
+
+Below is my config/paperclip.yml. It's formatted to look good in RDoc. Remove two spaces from each line if you use it to start your config
+
+  development:
+    storage: s3
+    path: /:class/:attachment/:style/:filename
+    s3_credentials:
+      bucket: <- replace with your dev bucket ->
+      access_key_id: <- your access key ->
+      secret_access_key: <- your secret key ->
+
+  test:
+    storage: filesystem
+    path: ':rails_root/public:url'
+    url: /paperclip/:class/:attachment/:id/:style/:filename
+
+  production:
+    storage: s3
+    path: /:class/:attachment/:style/:filename
+    s3_credentials:
+      bucket: <- your prod bucket ->
+      access_key_id: <- your access key ->
+      secret_access_key: <- your secret key ->
+
 =Paperclip
 
 Paperclip is intended as an easy file attachment library for ActiveRecord. The

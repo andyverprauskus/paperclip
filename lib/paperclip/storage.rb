@@ -135,7 +135,7 @@ module Paperclip
         end
 
         base.instance_eval do
-          @s3_credentials = parse_credentials(@options[:s3_credentials])
+          @s3_credentials = parse_credentials(@options[:s3_credentials] || @s3_credentials)
           @bucket         = @options[:bucket]         || @s3_credentials[:bucket]
           @bucket         = @bucket.call(self) if @bucket.is_a?(Proc)
           @s3_options     = @options[:s3_options]     || {}

@@ -30,6 +30,7 @@ module Paperclip
 
       options = self.class.default_options.merge(options)
 
+      process_config(options[:config])
       @url               = options[:url]
       @url               = @url.call(self) if @url.is_a?(Proc)
       @path              = options[:path]
@@ -51,6 +52,16 @@ module Paperclip
       initialize_storage
     end
     
+    def process_config path
+      return if options[:config].blank?
+      opts = YAML::load(ERB.new(File.read(path)).result).stringify_keys
+      opts = opts[Rails.env.to_s]
+      opts.each_pair do |key, val|
+        expr = "@#{key} = opts['#{key}']"
+        eval(expr) unless val.blank?
+      end
+    end
+
     def styles
       unless @normalized_styles
         @normalized_styles = {}
