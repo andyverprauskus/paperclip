@@ -4,7 +4,7 @@ module Paperclip
   # when the model saves, deletes when the model is destroyed, and processes
   # the file upon assignment.
   class Attachment
-    
+
     def self.default_options
       @default_options ||= {
         :url               => "/system/:attachment/:id/:style/:filename",
@@ -31,18 +31,18 @@ module Paperclip
       options = self.class.default_options.merge(options)
 
       process_config(options[:config])
-      @url               = options[:url]
+      @url               ||= options[:url]
       @url               = @url.call(self) if @url.is_a?(Proc)
-      @path              = options[:path]
+      @path              ||= options[:path]
       @path              = @path.call(self) if @path.is_a?(Proc)
-      @styles            = options[:styles]
+      @styles            ||= options[:styles]
       @normalized_styles = nil
-      @default_url       = options[:default_url]
-      @default_style     = options[:default_style]
-      @storage           = options[:storage]
-      @whiny             = options[:whiny_thumbnails] || options[:whiny]
-      @convert_options   = options[:convert_options]
-      @processors        = options[:processors]
+      @default_url       ||= options[:default_url]
+      @default_style     ||= options[:default_style]
+      @storage           ||= options[:storage]
+      @whiny             ||= options[:whiny_thumbnails] || options[:whiny]
+      @convert_options   ||= options[:convert_options]
+      @processors        ||= options[:processors]
       @options           = options
       @queued_for_delete = []
       @queued_for_write  = {}
